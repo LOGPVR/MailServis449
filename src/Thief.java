@@ -7,8 +7,30 @@ getStolenValue, который возвращает суммарную стои�
  */
 
 public class Thief implements MailService{
+    private final int minBorder;
+    private int stolenCounter = 0;
+
+    public Thief (int minBorder) {
+        this.minBorder = minBorder;
+    }
+
+    int getStolenValue() {
+        return stolenCounter;
+    }
+
     @Override
     public Sendable processMail(Sendable mail) {
-        return null;
+        if (mail instanceof MailPackage) {
+            MailPackage mailPackage = (MailPackage) mail;//кастим потому что у Sendable нет метода getContent,потому что mail extends AbstractSendable
+            Package content = mailPackage.getContent();
+            if (content.getPrice() >= minBorder) {
+                stolenCounter += content.getPrice();
+                Package stolenContent = new Package("stones instead of " +
+                        content.getContent(), 0);
+                MailPackage stolenPackage = new MailPackage(mailPackage.getFrom(), mailPackage.getTo(), stolenContent);
+                return stolenPackage;
+            }
+        }
+        return mail;
     }
 }

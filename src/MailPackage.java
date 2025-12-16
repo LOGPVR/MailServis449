@@ -11,6 +11,10 @@ public class MailPackage extends AbstractSendable{
         this.content = content;
     }
 
+    public Package getContent() {
+        return content;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
