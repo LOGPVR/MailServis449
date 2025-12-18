@@ -6,9 +6,21 @@
 самостоятельно в виде непроверяемых исключений.
  */
 
-public class Inspector implements MailService{
+public class Inspector implements MailService {
     @Override
     public Sendable processMail(Sendable mail) {
-        return null;
+        if (mail instanceof MailPackage) {
+            MailPackage mailPackage = (MailPackage) mail;
+            Package content = mailPackage.getContent();
+            String contentStr = content.getContent();
+            if (contentStr.contains("weapons")
+                    || contentStr.contains("banned substance")) {
+                throw new IllegalPackageException("Недопустимое содержание посылки");
+            }
+            if (contentStr.contains("stones")) {
+                throw new StolenPackageException("Произошла подмена содержимого на Камни");
+            }
+        }
+        return mail;
     }
 }

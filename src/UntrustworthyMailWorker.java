@@ -7,11 +7,24 @@ processMail второго элемента, и т. д.) и метод getRealMa
 RealMailService, он не приходит масивом в конструкторе и не настраивается извне класса.
  */
 
-public class UntrustworthyMailWorker implements MailService{
+public class UntrustworthyMailWorker implements MailService {
+    private final MailService[] handler;
+    private final RealMailService realMailService = new RealMailService();
 
+    public UntrustworthyMailWorker(MailService[] handler) {
+        this.handler = handler;
+    }
 
     @Override
     public Sendable processMail(Sendable mail) {
-        return null;
+        Sendable sendable = mail;
+        for (MailService mailService : handler) {
+            sendable = mailService.processMail(sendable);
+        }
+        return realMailService.processMail(sendable);
+    }
+
+    public RealMailService getRealMailService() {
+        return realMailService;
     }
 }

@@ -6,11 +6,11 @@ getStolenValue, который возвращает суммарную стои�
 "stones instead of {content}".
  */
 
-public class Thief implements MailService{
+public class Thief implements MailService {
     private final int minBorder;
     private int stolenCounter = 0;
 
-    public Thief (int minBorder) {
+    public Thief(int minBorder) {
         this.minBorder = minBorder;
     }
 
